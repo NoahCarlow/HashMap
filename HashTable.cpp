@@ -84,6 +84,7 @@ void HashTable::create_hash_table()
             }
             else
             {
+                // links the project to the existing project since a collision occured
                 Project* ptr = &projectHashTable[key];
                 Project* linkedProject = new Project;
 
@@ -92,6 +93,7 @@ void HashTable::create_hash_table()
                 linkedProject->projCost = userProjCost;
                 linkedProject->nextProject = NULL;
 
+                // looks for the last project and stores the pointer in nextProject
                 while(ptr->nextProject != NULL)
                 {
                     ptr = ptr->nextProject;
@@ -130,7 +132,7 @@ void HashTable::hash_display()
             std::cout << "Cost: " << projectHashTable[i].projCost << std::endl;
             std::cout << std::endl;
 
-            // checks if there is anymore projects to print if a collision occured
+            // checks if there is anymore projects to print if a collision occured using the first project pointer
             if(projectHashTable[i].nextProject != NULL)
             {
                 Project linkedProjectData = *projectHashTable[i].nextProject;
@@ -138,6 +140,16 @@ void HashTable::hash_display()
                 std::cout << "Region: " << linkedProjectData.projRegion << std::endl;
                 std::cout << "Cost: " << linkedProjectData.projCost << std::endl;
                 std::cout << std::endl;
+
+                // checks if there is anymore projects to print if a collision occured using the linked project pointer
+                while(linkedProjectData.nextProject != NULL)
+                {
+                    linkedProjectData = *linkedProjectData.nextProject;
+                    std::cout << "Project Name: " << linkedProjectData.projName << std::endl;
+                    std::cout << "Region: " << linkedProjectData.projRegion << std::endl;
+                    std::cout << "Cost: " << linkedProjectData.projCost << std::endl;
+                    std::cout << std::endl;
+                }
             }
         }
     }
