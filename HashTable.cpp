@@ -119,7 +119,23 @@ void HashTable::hash_display()
     for(int i = 0; i < hashSize; i++)
     {
         // TODO get linked list size output
-        std::cout << "index: " << i << ", linked list size: " << std::endl;
+        int linkedListSize = 0;
+        if(projectHashTable[i].projName != "")
+        {
+            linkedListSize++;
+            if(projectHashTable[i].nextProject != NULL)
+            {
+                linkedListSize++;
+                Project linkedProjectDataTwo = *projectHashTable[i].nextProject;
+                while(linkedProjectDataTwo.nextProject != NULL)
+                {
+                    linkedListSize++;
+                    linkedProjectDataTwo = *linkedProjectDataTwo.nextProject;
+                }
+            }
+        }
+
+        std::cout << "index: " << i << ", linked list size: " << linkedListSize << std::endl;
         if(projectHashTable[i].projName == "" && projectHashTable[i].projRegion == "")
         {
             std::cout << "The list is empty" << std::endl;
