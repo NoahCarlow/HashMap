@@ -118,7 +118,6 @@ void HashTable::hash_display()
 
     for(int i = 0; i < hashSize; i++)
     {
-        // TODO get linked list size output
         int linkedListSize = 0;
         if(projectHashTable[i].projName != "")
         {
@@ -172,9 +171,43 @@ void HashTable::hash_display()
 }
 
 // Searches for project inputed by user and returns cost
-int HashTable::hash_search(std::string projName)
+void HashTable::hash_search(std::string projName)
 {
-    return 0;
+    int index = hash_function(projName);
+    if(projectHashTable[index].projName == projName)
+    {
+        std::string name = projectHashTable[index].projName;
+        int cost = projectHashTable[index].projCost;
+        std::cout << "The Project: " << name << " with Cost " << cost << " is found" << std::endl;
+    }
+    else if(projectHashTable[index].nextProject != NULL)
+    {
+        Project linkedProjectData = *projectHashTable[index].nextProject;
+        if(linkedProjectData.projName == projName)
+        {
+            std::string name = linkedProjectData.projName;
+            int cost = linkedProjectData.projCost;
+            std::cout << "The Project: " << name << " with Cost " << cost << " is found" << std::endl;
+        }
+        else
+        {
+            while(linkedProjectData.nextProject != NULL)
+            {
+                linkedProjectData = *linkedProjectData.nextProject;
+                if(linkedProjectData.projName == projName)
+                {
+                    std::string name = linkedProjectData.projName;
+                    int cost = linkedProjectData.projCost;
+                    std::cout << "The Project: " << name << " with Cost " << cost << " is found" << std::endl;
+                    break;
+                }
+            }
+        }
+    }
+    else
+    {
+        std::cout << "The Project: " << projName << " is not found" << std::endl;
+    }
 }
 
 // Deletes a project inputed by user and returns cost
