@@ -36,6 +36,7 @@ void HashTable::create_hash_table()
         projectHashTable[i].projCost = 0;
         projectHashTable[i].projName = "";
         projectHashTable[i].projRegion = "";
+        projectHashTable[i].nextProject = NULL;
     }
     
     // control is used in a if statement below
@@ -72,10 +73,31 @@ void HashTable::create_hash_table()
             std::string userProjName = userProjInput[0];
             std::string userProjRegion = userProjInput[1];
             int userProjCost = stoi(userProjInput[2]);
-            // loads data into project at specified index after hash function
-            projectHashTable[key].projName = userProjName;
-            projectHashTable[key].projRegion = userProjRegion;
-            projectHashTable[key].projCost = userProjCost;
+
+            // checks if the spot in the hash table is empty if its not we need to implement linking
+            if(projectHashTable[key].projName == "" && projectHashTable[key].projRegion == "")
+            {
+                // loads data into project at specified index after hash function
+                projectHashTable[key].projName = userProjName;
+                projectHashTable[key].projRegion = userProjRegion;
+                projectHashTable[key].projCost = userProjCost;
+            }
+            else
+            {
+                Project* ptr = &projectHashTable[key];
+                Project* linkedProject = new Project;
+
+                linkedProject->projName = userProjName;
+                linkedProject->projRegion = userProjRegion;
+                linkedProject->projCost = userProjCost;
+                linkedProject->nextProject = NULL;
+
+                while(ptr->nextProject != NULL)
+                {
+                    ptr = ptr->nextProject;
+                }
+                ptr->nextProject = linkedProject;
+            }
         }
         control += 1;
     }
@@ -96,7 +118,7 @@ void HashTable::hash_display()
     {
         // TODO get linked list size output
         std::cout << "index: " << i << ", linked list size: " << std::endl;
-        if(projectHashTable[i].projCost == 0)
+        if(projectHashTable[i].projName == "" && projectHashTable[i].projRegion == "")
         {
             std::cout << "The list is empty" << std::endl;
             std::cout << std::endl;
@@ -107,6 +129,16 @@ void HashTable::hash_display()
             std::cout << "Region: " << projectHashTable[i].projRegion << std::endl;
             std::cout << "Cost: " << projectHashTable[i].projCost << std::endl;
             std::cout << std::endl;
+
+            // checks if there is anymore projects to print if a collision occured
+            if(projectHashTable[i].nextProject != NULL)
+            {
+                Project linkedProjectData = *projectHashTable[i].nextProject;
+                std::cout << "Project Name: " << linkedProjectData.projName << std::endl;
+                std::cout << "Region: " << linkedProjectData.projRegion << std::endl;
+                std::cout << "Cost: " << linkedProjectData.projCost << std::endl;
+                std::cout << std::endl;
+            }
         }
     }
 }
