@@ -39,7 +39,7 @@ void HashTable::create_hash_table()
         projectHashTable[i].nextProject = NULL;
     }
     
-    // control is used in a if statement below
+    // control is used in an if statement below
     int control = 0;
     while(true)
     {
@@ -150,6 +150,7 @@ void HashTable::hash_display()
             // checks if there is anymore projects to print if a collision occured using the first project pointer
             if(projectHashTable[i].nextProject != NULL)
             {
+                // gets access to the project data stored within the pointer of the chained project
                 Project linkedProjectData = *projectHashTable[i].nextProject;
                 std::cout << "Project Name: " << linkedProjectData.projName << std::endl;
                 std::cout << "Region: " << linkedProjectData.projRegion << std::endl;
@@ -159,6 +160,7 @@ void HashTable::hash_display()
                 // checks if there is anymore projects to print if a collision occured using the linked project pointer
                 while(linkedProjectData.nextProject != NULL)
                 {
+                    // gets access to the project data stored within the pointer of the chained project
                     linkedProjectData = *linkedProjectData.nextProject;
                     std::cout << "Project Name: " << linkedProjectData.projName << std::endl;
                     std::cout << "Region: " << linkedProjectData.projRegion << std::endl;
@@ -173,15 +175,20 @@ void HashTable::hash_display()
 // Searches for project inputed by user and returns cost
 void HashTable::hash_search(std::string projName)
 {
+    // gets the index that we should search at using our hash function
     int index = hash_function(projName);
+
+    // checks if the first project in the index is found
     if(projectHashTable[index].projName == projName)
     {
         std::string name = projectHashTable[index].projName;
         int cost = projectHashTable[index].projCost;
         std::cout << "The Project: " << name << " with Cost " << cost << " is found" << std::endl;
     }
+    // if first project is not equal to search then check if its chained to another project
     else if(projectHashTable[index].nextProject != NULL)
     {
+        // gets access to the project data stored within the pointer of the chained project
         Project linkedProjectData = *projectHashTable[index].nextProject;
         if(linkedProjectData.projName == projName)
         {
@@ -189,10 +196,12 @@ void HashTable::hash_search(std::string projName)
             int cost = linkedProjectData.projCost;
             std::cout << "The Project: " << name << " with Cost " << cost << " is found" << std::endl;
         }
+        // keep traversing through chained projects and check if search is equal to project name
         else
         {
             while(linkedProjectData.nextProject != NULL)
             {
+                // gets access to the project data stored within the pointer of the chained project
                 linkedProjectData = *linkedProjectData.nextProject;
                 if(linkedProjectData.projName == projName)
                 {
@@ -204,6 +213,7 @@ void HashTable::hash_search(std::string projName)
             }
         }
     }
+    // if nothing is found through out the whole hash table then return not found
     else
     {
         std::cout << "The Project: " << projName << " is not found" << std::endl;
@@ -211,9 +221,95 @@ void HashTable::hash_search(std::string projName)
 }
 
 // Deletes a project inputed by user and returns cost
-int HashTable::hash_delete(std::string projName)
+void HashTable::hash_delete(std::string projName)
 {
-    return 0;
+    // gets the index that we should search at using our hash function
+    int index = hash_function(projName);
+
+    // checks if the first project in the index is found
+    if(projectHashTable[index].projName == projName)
+    {
+        std::string name = projectHashTable[index].projName;
+        int cost = projectHashTable[index].projCost;
+        std::cout << "The Project: " << name << " with Cost " << cost << " is removed" << std::endl;
+
+        // removes all the data and changes the pointer if it points to another project
+        if(projectHashTable[index].nextProject != NULL)
+        {
+            // gets access to the project data stored within the pointer of the chained project
+            Project linkedProjectData = *projectHashTable[index].nextProject;
+            projectHashTable[index].projName = linkedProjectData.projName;
+            projectHashTable[index].projRegion = linkedProjectData.projRegion;
+            projectHashTable[index].projCost = linkedProjectData.projCost;
+            projectHashTable[index].nextProject = linkedProjectData.nextProject;
+        }
+        else
+        {
+            projectHashTable[index].projName = "";
+            projectHashTable[index].projRegion = "";
+            projectHashTable[index].projCost = 0;
+            projectHashTable[index].nextProject = NULL;
+        }
+    }
+    // if first project is not equal to search then check if its chained to another project
+    else if(projectHashTable[index].nextProject != NULL)
+    {
+        // gets access to the project data stored within the pointer of the chained project
+        Project linkedProjectData = *projectHashTable[index].nextProject;
+        if(linkedProjectData.projName == projName)
+        {
+            std::string name = linkedProjectData.projName;
+            int cost = linkedProjectData.projCost;
+            std::cout << "The Project: " << name << " with Cost " << cost << " is removed" << std::endl;
+
+            // before we delete the object we have to check if it chains to another in the list then store that link in the node previous to it
+            if(linkedProjectData.nextProject != NULL)
+            {
+                projectHashTable[index].nextProject = linkedProjectData.nextProject;
+            }
+            // if the project we are removing is not linked to another project then the original project's pointer is set to NULL
+            else if(linkedProjectData.nextProject == NULL)
+            {
+                projectHashTable[index].nextProject = NULL;
+            }
+
+            // remove all the data in the project we are erasing
+            linkedProjectData.projName = "";
+            linkedProjectData.projRegion = "";
+            linkedProjectData.projCost = 0;
+            linkedProjectData.nextProject = NULL;
+            // this is bad memory management because this object is still in our memory it's just not linked
+            // may want to fix this at some point
+        }
+        // keep traversing through chained projects and check if search is equal to project name
+        else
+        {
+            while(linkedProjectData.nextProject != NULL)
+            {
+                void* testy = linkedProjectData.nextProject;
+
+                linkedProjectData = *linkedProjectData.nextProject;
+                if(linkedProjectData.projName == projName)
+                {
+                    std::string name = linkedProjectData.projName;
+                    int cost = linkedProjectData.projCost;
+                    std::cout << "The Project: " << name << " with Cost " << cost << " is removed" << std::endl;
+                    
+                    linkedProjectData.projName = "";
+                    linkedProjectData.projRegion = "";
+                    linkedProjectData.projCost = 0;
+                    linkedProjectData.nextProject = NULL;
+
+                    break;
+                }
+            }
+        }
+    }
+    // if nothing is found through out the whole hash table then return not found
+    else
+    {
+        std::cout << "The Project: " << projName << " is not removed" << std::endl;
+    }
 }
 
 // Searches for the highest cost project in the Hash Table and returns it

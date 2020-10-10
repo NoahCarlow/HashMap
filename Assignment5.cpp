@@ -15,8 +15,9 @@
 int main()
 {
     HashTable myHashTable;
-    std::string name = "Trystin ROwland";
+    std::string name = "noah";
     myHashTable.create_hash_table();
     myHashTable.hash_display();
-    myHashTable.hash_search(name);
+    myHashTable.hash_delete(name);
+    myHashTable.hash_display();
 }
