@@ -286,7 +286,7 @@ void HashTable::hash_delete(std::string projName)
         {
             while(linkedProjectData.nextProject != NULL)
             {
-                void* testy = linkedProjectData.nextProject;
+                Project testy = *linkedProjectData.nextProject;
 
                 linkedProjectData = *linkedProjectData.nextProject;
                 if(linkedProjectData.projName == projName)
@@ -295,6 +295,17 @@ void HashTable::hash_delete(std::string projName)
                     int cost = linkedProjectData.projCost;
                     std::cout << "The Project: " << name << " with Cost " << cost << " is removed" << std::endl;
                     
+                    // before we delete the object we have to check if it chains to another in the list then store that link in the node previous to it
+                    if(linkedProjectData.nextProject != NULL)
+                    {
+                        testy.nextProject = linkedProjectData.nextProject;
+                    }
+                    // if the project we are removing is not linked to another project then the original project's pointer is set to NULL
+                    else if(linkedProjectData.nextProject == NULL)
+                    {
+                        testy.nextProject = NULL;
+                    }
+
                     linkedProjectData.projName = "";
                     linkedProjectData.projRegion = "";
                     linkedProjectData.projCost = 0;
@@ -313,7 +324,44 @@ void HashTable::hash_delete(std::string projName)
 }
 
 // Searches for the highest cost project in the Hash Table and returns it
-int HashTable::hash_max_cost()
+void HashTable::hash_max_cost()
 {
-    return 0;
+    int maxCost = 0;
+    std::string name = "";
+
+    // traverse through the entire Hash Table
+    for(int i = 0; i < hashSize; i++)
+    {
+        if(projectHashTable[i].projCost > maxCost)
+        {
+            // checks the first index of the Hash Table
+            maxCost = projectHashTable[i].projCost;
+            name = projectHashTable[i].projName;
+            
+            // checks if the first index is chained
+            if(projectHashTable[i].nextProject != NULL)
+            {
+                // gets the data stored within the chain
+                Project linkedProjectData = *projectHashTable[i].nextProject;
+
+                // checks to see if this cost is bigger than the first index project
+                if(linkedProjectData.projCost > maxCost)
+                {
+                    maxCost = linkedProjectData.projCost;
+                    name = linkedProjectData.projName;
+                }
+                while(linkedProjectData.nextProject != NULL)
+                {
+                    // gets the data of the 3rd chain project data
+                    linkedProjectData = *linkedProjectData.nextProject;
+                    if(linkedProjectData.projCost > maxCost)
+                    {
+                        maxCost = linkedProjectData.projCost;
+                        name = linkedProjectData.projName;
+                    }
+                }
+            }
+        }
+    }
+    std::cout << "The Project: " << name << " has the highest cost of " << maxCost << std::endl;
 }

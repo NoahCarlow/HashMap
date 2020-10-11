@@ -27,7 +27,7 @@ struct HashTable
     void hash_display();                    // Displays content of the Hash Table
     void hash_search(std::string projName);  // Searches for project inputed by user and returns cost
     void hash_delete(std::string projName);  // Deletes a project inputed by user and returns cost
-    int hash_max_cost();                    // Searches for the highest cost project in the Hash Table and returns it
+    void hash_max_cost();                    // Searches for the highest cost project in the Hash Table and returns it
 };
 
 #endif
