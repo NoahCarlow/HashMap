@@ -107,7 +107,54 @@ void HashTable::create_hash_table()
     int numberOfCommands;
     std::cout << "Please enter a number of commands: ";
     std::cin >> numberOfCommands;
-    // ...
+
+    // store the command input in a string vector
+    std::vector<std::string> userCommandInput;
+    
+    for(int i = -1; i < numberOfCommands; i++)
+    {
+        std::string commandInput = "";
+        
+        // cin has to be done this way because cin doesn't like whitespace
+        getline(std::cin,commandInput);
+
+        // this loop parses the input that is comma delimited
+        std::stringstream ss(commandInput);
+        while(ss.good())
+        {
+            std::string subString;
+            getline(ss, subString, '/');
+            userCommandInput.push_back(subString);
+        }
+        //std::cout << (userCommandInput[i]) << std::endl;
+    }
+    int controlCount = numberOfCommands + 1;
+    for(int i = 1; i < controlCount; i++)
+    {
+        //std::cout << "COMMAND: " << i << userCommandInput[i] << std::endl;
+        if (userCommandInput[i] == "hash_display")
+        {
+            std::cout << "command : hash_display" << std::endl; 
+            hash_display();
+        }
+        else if (userCommandInput[i] == "hash_search")
+        {
+            std::cout << "command : hash_search" << std::endl; 
+            hash_search(userCommandInput[i + 1]);
+            controlCount++;
+        }
+        else if (userCommandInput[i] == "hash_delete")
+        {
+            std::cout << "command : hash_delete" << std::endl; 
+            hash_delete(userCommandInput[i + 1]);
+            controlCount++;
+        }
+        else if (userCommandInput[i] == "hash_max_cost")
+        {
+            std::cout << "command : hash_max_cost" << std::endl; 
+            hash_max_cost();
+        }
+    }
 }
 
 // Displays content of the Hash Table
@@ -184,6 +231,7 @@ void HashTable::hash_search(std::string projName)
         std::string name = projectHashTable[index].projName;
         int cost = projectHashTable[index].projCost;
         std::cout << "The Project: " << name << " with Cost " << cost << " is found" << std::endl;
+        std::cout << std::endl;
     }
     // if first project is not equal to search then check if its chained to another project
     else if(projectHashTable[index].nextProject != NULL)
@@ -195,6 +243,7 @@ void HashTable::hash_search(std::string projName)
             std::string name = linkedProjectData.projName;
             int cost = linkedProjectData.projCost;
             std::cout << "The Project: " << name << " with Cost " << cost << " is found" << std::endl;
+            std::cout << std::endl;
         }
         // keep traversing through chained projects and check if search is equal to project name
         else
@@ -208,6 +257,7 @@ void HashTable::hash_search(std::string projName)
                     std::string name = linkedProjectData.projName;
                     int cost = linkedProjectData.projCost;
                     std::cout << "The Project: " << name << " with Cost " << cost << " is found" << std::endl;
+                    std::cout << std::endl;
                     break;
                 }
             }
@@ -232,6 +282,7 @@ void HashTable::hash_delete(std::string projName)
         std::string name = projectHashTable[index].projName;
         int cost = projectHashTable[index].projCost;
         std::cout << "The Project: " << name << " with Cost " << cost << " is removed" << std::endl;
+        std::cout << std::endl;
 
         // removes all the data and changes the pointer if it points to another project
         if(projectHashTable[index].nextProject != NULL)
@@ -261,6 +312,7 @@ void HashTable::hash_delete(std::string projName)
             std::string name = linkedProjectData.projName;
             int cost = linkedProjectData.projCost;
             std::cout << "The Project: " << name << " with Cost " << cost << " is removed" << std::endl;
+            std::cout << std::endl;
 
             // before we delete the object we have to check if it chains to another in the list then store that link in the node previous to it
             if(linkedProjectData.nextProject != NULL)
@@ -294,6 +346,7 @@ void HashTable::hash_delete(std::string projName)
                     std::string name = linkedProjectData.projName;
                     int cost = linkedProjectData.projCost;
                     std::cout << "The Project: " << name << " with Cost " << cost << " is removed" << std::endl;
+                    std::cout << std::endl;
                     
                     // before we delete the object we have to check if it chains to another in the list then store that link in the node previous to it
                     if(linkedProjectData.nextProject != NULL)
@@ -364,4 +417,5 @@ void HashTable::hash_max_cost()
         }
     }
     std::cout << "The Project: " << name << " has the highest cost of " << maxCost << std::endl;
+    std::cout << std::endl;
 }

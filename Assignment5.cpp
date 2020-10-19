@@ -15,10 +15,9 @@
 int main()
 {
     HashTable myHashTable;
-    std::string name = "noah";
     myHashTable.create_hash_table();
-    myHashTable.hash_display();
+    //myHashTable.hash_display();
     //myHashTable.hash_delete(name);
     //myHashTable.hash_display();
-    myHashTable.hash_max_cost();
+    //myHashTable.hash_max_cost();
 }
