@@ -16,7 +16,7 @@ int HashTable::hash_function(std::string key)
     int sum = 0;
     for(int i = 0; i < key.length(); i++)
     {
-        sum += key[i]*i;
+        sum += key[i]*i*33;
     }
     // returns the sum of all ASCII values mod hashSize to keep it within the size of the Hash Table
     return sum % hashSize;
