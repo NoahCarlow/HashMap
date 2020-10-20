@@ -12,23 +12,14 @@
 // Calculates the index using a hash formula by using projName as the key
 int HashTable::hash_function(std::string key)
 {
-    // // adds all the ASCII values together of the project name multiplied by index to prevent variations of the same word
-    // int sum = 0;
-    // for(int i = 0; i < key.length(); i++)
-    // {
-    //     sum += key[i]*i*33;
-    // }
-    // // returns the sum of all ASCII values mod hashSize to keep it within the size of the Hash Table
-    // return sum % hashSize;
-
-    
-    unsigned long hash = 5381;
-
-    for(auto c : key)
-        hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
-
-    return hash % hashSize;
-
+    // adds all the ASCII values together of the project name multiplied by index to prevent variations of the same word
+    int sum = 0;
+    for(int i = 0; i < key.length(); i++)
+    {
+        sum += key[i]*i*33;
+    }
+    // returns the sum of all ASCII values mod hashSize to keep it within the size of the Hash Table
+    return sum % hashSize;
 }
 
 // Creates the Hash Table with user input
@@ -233,12 +224,14 @@ void HashTable::hash_search(std::string projName)
 {
     // gets the index that we should search at using our hash function
     int index = hash_function(projName);
+    bool found = false;
 
     // checks if the first project in the index is found
     if(projectHashTable[index].projName == projName)
     {
         std::string name = projectHashTable[index].projName;
         int cost = projectHashTable[index].projCost;
+        found = true;
         std::cout << "The Project: " << name << " with Cost " << cost << " is found" << std::endl;
         std::cout << std::endl;
     }
@@ -251,6 +244,7 @@ void HashTable::hash_search(std::string projName)
         {
             std::string name = linkedProjectData.projName;
             int cost = linkedProjectData.projCost;
+            found = true;
             std::cout << "The Project: " << name << " with Cost " << cost << " is found" << std::endl;
             std::cout << std::endl;
         }
@@ -265,6 +259,7 @@ void HashTable::hash_search(std::string projName)
                 {
                     std::string name = linkedProjectData.projName;
                     int cost = linkedProjectData.projCost;
+                    found = true;
                     std::cout << "The Project: " << name << " with Cost " << cost << " is found" << std::endl;
                     std::cout << std::endl;
                     break;
@@ -273,9 +268,10 @@ void HashTable::hash_search(std::string projName)
         }
     }
     // if nothing is found through out the whole hash table then return not found
-    else
+    if(found == false)
     {
         std::cout << "The Project: " << projName << " is not found" << std::endl;
+        std::cout << std::endl;
     }
 }
 
@@ -284,12 +280,14 @@ void HashTable::hash_delete(std::string projName)
 {
     // gets the index that we should search at using our hash function
     int index = hash_function(projName);
+    bool found = false;
 
     // checks if the first project in the index is found
     if(projectHashTable[index].projName == projName)
     {
         std::string name = projectHashTable[index].projName;
         int cost = projectHashTable[index].projCost;
+        found = true;
         std::cout << "The Project: " << name << " with Cost " << cost << " is removed" << std::endl;
         std::cout << std::endl;
 
@@ -320,6 +318,7 @@ void HashTable::hash_delete(std::string projName)
         {
             std::string name = linkedProjectData.projName;
             int cost = linkedProjectData.projCost;
+            found = true;
             std::cout << "The Project: " << name << " with Cost " << cost << " is removed" << std::endl;
             std::cout << std::endl;
 
@@ -354,6 +353,7 @@ void HashTable::hash_delete(std::string projName)
                 {
                     std::string name = linkedProjectData.projName;
                     int cost = linkedProjectData.projCost;
+                    found = true;
                     std::cout << "The Project: " << name << " with Cost " << cost << " is removed" << std::endl;
                     std::cout << std::endl;
                     
@@ -379,9 +379,10 @@ void HashTable::hash_delete(std::string projName)
         }
     }
     // if nothing is found through out the whole hash table then return not found
-    else
+    if(found == false)
     {
         std::cout << "The Project: " << projName << " is not removed" << std::endl;
+        std::cout << std::endl;
     }
 }
 
