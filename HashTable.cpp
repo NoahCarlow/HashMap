@@ -12,14 +12,23 @@
 // Calculates the index using a hash formula by using projName as the key
 int HashTable::hash_function(std::string key)
 {
-    // adds all the ASCII values together of the project name multiplied by index to prevent variations of the same word
-    int sum = 0;
-    for(int i = 0; i < key.length(); i++)
-    {
-        sum += key[i]*i*33;
-    }
-    // returns the sum of all ASCII values mod hashSize to keep it within the size of the Hash Table
-    return sum % hashSize;
+    // // adds all the ASCII values together of the project name multiplied by index to prevent variations of the same word
+    // int sum = 0;
+    // for(int i = 0; i < key.length(); i++)
+    // {
+    //     sum += key[i]*i*33;
+    // }
+    // // returns the sum of all ASCII values mod hashSize to keep it within the size of the Hash Table
+    // return sum % hashSize;
+
+    
+    unsigned long hash = 5381;
+
+    for(auto c : key)
+        hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
+
+    return hash % hashSize;
+
 }
 
 // Creates the Hash Table with user input
