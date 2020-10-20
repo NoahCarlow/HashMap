@@ -1,6 +1,6 @@
-// TODO Add Header
-// including a description and comments for each
-// function/method, at the top of each class, and each file
+// Author: Noah Carlow
+// Class ID: CSE 360
+// Description: header file for hash functions with descriptions of each
 
 #ifndef HASHTABLE_H
 #define HASHTABLE_H

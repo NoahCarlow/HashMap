@@ -1,6 +1,6 @@
-// TODO Add Header
-// including a description and comments for each
-// function/method, at the top of each class, and each file
+// Author: Noah Carlow
+// Class ID: CSE 360
+// Description: main driver file that calls the hash table functions
 
 // I came up with my hash function by studying other hash functions and seeing how they avoided collisions. This helped me understand what a bad vs good hash
 // function was. The number of collisions was exactly as I expected. Depending on the size of the hash table, the collisions are very minimal.
@@ -16,8 +16,4 @@ int main()
 {
     HashTable myHashTable;
     myHashTable.create_hash_table();
-    //myHashTable.hash_display();
-    //myHashTable.hash_delete(name);
-    //myHashTable.hash_display();
-    //myHashTable.hash_max_cost();
 }

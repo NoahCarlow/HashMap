@@ -1,6 +1,6 @@
-// TODO Add Header
-// including a description and comments for each
-// function/method, at the top of each class, and each file
+// Author: Noah Carlow
+// Class ID: CSE 360
+// Description: controls the hash table functions
 
 #include <iostream>
 #include <string>
@@ -25,7 +25,7 @@ int HashTable::hash_function(std::string key)
 // Creates the Hash Table with user input
 void HashTable::create_hash_table()
 {
-    std::cout << "Please enter a hash table size: ";
+    std::cout << "Please enter a hash table size: " << std::endl;
     std::cin >> hashSize;
     // creates our array of size hashSize entered by user
     projectHashTable = new Project[hashSize];
@@ -105,7 +105,7 @@ void HashTable::create_hash_table()
     }
     // TODO number of commands followed by what commands they are
     int numberOfCommands;
-    std::cout << "Please enter a number of commands: ";
+    std::cout << "Please enter a number of commands: " << std::endl;
     std::cin >> numberOfCommands;
 
     // store the command input in a string vector
